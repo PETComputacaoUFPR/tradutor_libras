@@ -1,0 +1,64 @@
+-Resolver problema da profundidade: aparentemente, não há uma solução simples para reconhecer apenas a mão mais próxima. O valor Z não diz respeito a isso, e não pode ser usado para essa análise. Entretanto, parece que o mediapipe tem uma opção para limitar o número de mãos reconhecidas. O problema é que ele parece não ter um critério muito específico para escolher uma mão ou outra, mas já ajuda.
+
+-Problema Esquerda/Direita: felizmente, o reconhecimento de mão tem um atributo (multi_handedness) que reconhece se a mão é a esquerda ou a direita. É invertido pois a câmera é invertida, mas isso não é um próxima na hora de classificar.
+
+-Controlando probabilidade: usando predict_proba, é possível controlar a probabilidade de cada classe e assim fazer previsões melhores. Por enquanto, usar um valor de 0.6 parece ajudar bastante já a impedir de classificar como um símbolo, mas esse valor precisa ser testado várias vezes.
+
+
+Questões a se pensar:
+1. Modelo irá reconhecer quais sinais? Por enquanto, irá reconhecer apenas letras que não exigem movimento (as que exigem são J, H, K, X, Z)
+
+2. Modelo deve reconhecer tanto mão esquerda quanto direita? Como os sinais de Libras podem ser feitos com qualquer mão, o modelo deverá reconhecer ambas. Entretanto, para facilitar, o modelo inicial só reconhecerá para mão esquerda
+
+3. Qual métrica é mais importante? Precision ou Recall? Precision, pois queremos um modelo que só classifique se tiver uma certeza alta
+
+
+PASSO A PASSO:
+0. Corrigir alguns detalhes: os códigos tem algns defeitos que precisam ser arrumados antes de mexer nos modelos. Isso inclui: incluir dados que contém apenas uma única mão, incluir parâmetro Z, 
+1. Coleta de dados: a coleta atual dedados tem dois problemas: são feitos a partir de uma única pessoa, e como as imagens sao coletadas em pouco tempo, são muito similares (alto viés). O primeiro problema é mais difícil de arrumar, exige convencer outros membros do PET a ajudar na coleta. Isso pode ser feito vendendo a ideia (problema na reunião) e deixando a ferramenta bem fácil de mexer. Já o segundo exige consertar o código.
+2. Parâmetros: serão usados dois tipos de conjuntos de parâmetros, ambos avaliando se é mão esquerda ou direita: coordenadas, dados vetoriais. O primeiro dataset consiste em 20 pontos com 3 coordenadas cada, resultando em 61 parâmetros. O segundo consiste em 20 pontos, cada um com 3 coordenadas de vetor e 1 distância, resultando em 81 parâmetros. Lembrar de remover o ponto 0 em ambos
+3. Métricas: é preciso definir quais métricas são mais relevantes para o modelo. A princípio, será usado acurácia como principal métrica, mas seria bom avaliar precision e recall também (usar confusion matrix)
+4. Avaliação e Melhora de Modelos: a princípio, serão usados 4 modelos: RandomForest com dataset de coordenadas, RandomForest com dataset de vetoriais, LogisticRegression com melhor dataset, KNN com melhor dataset. O melhor dataset será definido com RandomForest e depois aplicado aos outros. Posteriormente, será feita uma GridSearch e ForwardSelection para definir os parâmetros a serem utilizados
+5. Testes: usar dados de teste para escolher o melhor modelo e avaliar suas métricas
+6. Escrever resultados
+7. Incluir mão direita
+8. Isolamento da mão
+
+TO-DO
+0. Corrigir alguns detalhes
+-Incluir dados apenas se tiver uma única mão
+-Incluir parâmetro Z
+-Criar outro código para dados usando vetorial
+-Guardar dados em formato csv
+
+1. Coleta de dados
+-Pauta para reunião
+-Melhorar código (coletas mais lentas, avisar quando coletou no terminal, coletar apenas se houver uma única mão)
+-Documento explicando passo-a-passo de como fazer as imagens
+
+2. Parâmetros e modelos a serem treinados
+-Usar ponto 0 apenas como referência (origem de coordenadas relativas)
+-Identificar se é mão esquerda ou mão direita
+-Código para remover se houver mais de uma mão
+-Código do dataset do primeiro tipo (coordenadas, 61 parâmetros)
+-Código do dataset do segundo tipo (vetorial, 81 parâmetros)
+-Separar dados de treino e de teste
+
+3. Métricas
+-Pesquisar sobre precision e recall em multiclass
+-Código para avaliar métricas
+-Guardar ambos em csv
+
+4. Avaliação e Melhora de Modelos
+-Código do RandomForest (dataset coordenadas)
+-Código do RandomForest (dataset vetoriais)
+-Avaliação de qual dataset é melhor
+-Código do LogisticRegression
+-Código do KNN
+-GridSearch e Feature Selection
+-Escolher melhores modelos (no máximo cinco)
+
+5. Testes
+-Testar modelos
+-Escolher melhor modelo (segundo métricas)
+-Avaliar confusion matrix desse modelo
