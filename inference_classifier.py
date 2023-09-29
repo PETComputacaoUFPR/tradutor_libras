@@ -1,3 +1,4 @@
+# Application of model
 import pickle
 
 import cv2
@@ -7,29 +8,31 @@ import numpy as np
 # controls min probability to classify class
 MIN_PROB = 0.0
 
+# Loads model
 model_dict = pickle.load(open('./models/model.p', 'rb'))
 model = model_dict['model']
 
+# Creates panel and hand application
 cap = cv2.VideoCapture(0)
-
 mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 
+# Only one hand will be detected per frame
 hands = mp_hands.Hands(static_image_mode=True, max_num_hands=1, min_detection_confidence=0.3)
 
 while True:
-
+    # Creates frame and changed color system to RGB
     ret, frame = cap.read()
-
     H, W, _ = frame.shape
-
     frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
+    # if there's a hand, tries to detect symbol
     results = hands.process(frame_rgb)
     if results.multi_hand_landmarks:
         hand_landmarks = results.multi_hand_landmarks[0]
 
+        # Draws hand's coordinates
         mp_drawing.draw_landmarks(
             frame,  # image to draw
             hand_landmarks,  # model output
@@ -37,6 +40,7 @@ while True:
             mp_drawing_styles.get_default_hand_landmarks_style(),
             mp_drawing_styles.get_default_hand_connections_style())
 
+        # Gets values for prediction and to draw box around hand
         data_aux = []
         x_min, x_max = hand_landmarks.landmark[0].x, hand_landmarks.landmark[0].x
         y_min, y_max = hand_landmarks.landmark[0].y, hand_landmarks.landmark[0].y
@@ -59,7 +63,7 @@ while True:
         x2 = int(x_max * W) - 10
         y2 = int(y_max * H) - 10
 
-        #print(model.predict_proba([np.asarray(data_aux)])[0])
+        # prediction
         if max(model.predict_proba([np.asarray(data_aux)])[0]) < MIN_PROB:
             predicted_character = ''
         else:
@@ -74,5 +78,6 @@ while True:
     cv2.waitKey(1)
 
 
+# Destroys panel
 cap.release()
 cv2.destroyAllWindows()

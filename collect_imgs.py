@@ -1,8 +1,9 @@
+# Collects images from user to create datasets
 import os
 import cv2
 
-dataset_size = 10  # how many images will be collected
-name = input("Your name: ")
+DATASET_SIZE = 10  # how many images will be collected
+name = input("Your name: ")  # your name (to differentiate images)
 
 
 # get symbols from "symbols" file
@@ -10,7 +11,8 @@ with open("symbols", "r") as file:
     lines = file.read().splitlines()
     symbols = lines[0].strip()
 
-DATA_DIR = './data'
+# creates images path
+DATA_DIR = './imagens'
 if not os.path.exists(DATA_DIR):
     os.makedirs(DATA_DIR)
 
@@ -26,10 +28,16 @@ for symbol in symbols:
     if not os.path.exists(os.path.join(DATA_DIR, symbol)):
         os.makedirs(os.path.join(DATA_DIR, symbol))
 
-    print('Collecting data for class {}'.format(symbol))
+    # path of symbol
+    symbol_path = os.path.join(DATA_DIR, symbol)
 
-    # only collect remaining images
-    counter = len(os.listdir(os.path.join(DATA_DIR, symbol))) + 1
+    # only collects images if there are less images than DATASET_SIZE
+    if len(symbol_path) >= DATASET_SIZE:
+        continue
+
+    # collects remaining images
+    print('Collecting data for class {}'.format(symbol))
+    counter = len(os.listdir(symbol_path)) + 1
     while counter <= dataset_size:
         ret, frame = cap.read()
         # the output for pressing ENTER is 13
@@ -39,5 +47,7 @@ for symbol in symbols:
             counter += 1
         cv2.imshow('frame', frame)
 
+# ends application after capturing all images
+print("Images successfully captured!")
 cap.release()
 cv2.destroyAllWindows()

@@ -12,6 +12,7 @@ with open("../symbols", "r") as file:
     lines = file.read().splitlines()
     symbols = lines[0].strip()
 
+# Used to get hand's coordinates
 mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
@@ -19,6 +20,7 @@ mp_drawing_styles = mp.solutions.drawing_styles
 # change confidence detection if necessary
 hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3)
 
+# path of images
 DATA_DIR = '../imagens'
 
 data = []   # features (input of model)
@@ -49,6 +51,7 @@ for dir_ in symbols:
             data.append(data_aux)
             labels.append(dir_)
 
+# Creates dataset
 f = open('full_data.pickle', 'wb')
 pickle.dump({'data': data, 'labels': labels}, f)
 f.close()
