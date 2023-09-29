@@ -7,7 +7,7 @@ import numpy as np
 # controls min probability to classify class
 MIN_PROB = 0.0
 
-model_dict = pickle.load(open('./model.p', 'rb'))
+model_dict = pickle.load(open('./models/model.p', 'rb'))
 model = model_dict['model']
 
 cap = cv2.VideoCapture(0)
@@ -28,24 +28,25 @@ while True:
 
     results = hands.process(frame_rgb)
     if results.multi_hand_landmarks:
-        for hand_landmarks in results.multi_hand_landmarks:
-            mp_drawing.draw_landmarks(
-                frame,  # image to draw
-                hand_landmarks,  # model output
-                mp_hands.HAND_CONNECTIONS,  # hand connections
-                mp_drawing_styles.get_default_hand_landmarks_style(),
-                mp_drawing_styles.get_default_hand_connections_style())
+        hand_landmarks = results.multi_hand_landmarks[0]
+
+        mp_drawing.draw_landmarks(
+            frame,  # image to draw
+            hand_landmarks,  # model output
+            mp_hands.HAND_CONNECTIONS,  # hand connections
+            mp_drawing_styles.get_default_hand_landmarks_style(),
+            mp_drawing_styles.get_default_hand_connections_style())
 
         data_aux = []
-        x_0 = hand_landmarks.landmark[0].x
-        y_0 = hand_landmarks.landmark[0].y
-        x_min, x_max = x_0, x_0
-        y_min, y_max = y_0, y_0
-        for i in range(1, len(hand_landmarks.landmark)):
+        x_min, x_max = hand_landmarks.landmark[0].x, hand_landmarks.landmark[0].x
+        y_min, y_max = hand_landmarks.landmark[0].y, hand_landmarks.landmark[0].y
+        for i in range(len(hand_landmarks.landmark)):
             x = hand_landmarks.landmark[i].x
             y = hand_landmarks.landmark[i].y
-            data_aux.append(x - x_0)
-            data_aux.append(y - y_0)
+            z = hand_landmarks.landmark[i].z
+            data_aux.append(x)
+            data_aux.append(y)
+            data_aux.append(z)
 
             x_min = min(x_min, x)
             x_max = max(x_max, x)
