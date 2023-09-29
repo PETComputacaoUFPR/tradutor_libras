@@ -6,7 +6,7 @@ from sklearn.metrics import accuracy_score
 import numpy as np
 
 
-data_dict = pickle.load(open('./data.pickle', 'rb'))
+data_dict = pickle.load(open('../datasets/full_data.pickle', 'rb'))
 
 data = np.asarray(data_dict['data'])
 labels = np.asarray(data_dict['labels'])
