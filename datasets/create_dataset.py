@@ -38,7 +38,7 @@ for dir_ in symbols:
         # only adds data if there is only one hand detected
         if len(results.multi_hand_landmarks) == 1:
             hand_landmarks = results.multi_hand_landmarks[0]
-            for i in range(1, len(hand_landmarks.landmark)):
+            for i in range(len(hand_landmarks.landmark)):
                 x = hand_landmarks.landmark[i].x
                 y = hand_landmarks.landmark[i].y
                 z = hand_landmarks.landmark[i].z
