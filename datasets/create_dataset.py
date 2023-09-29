@@ -1,3 +1,5 @@
+# Creates dataset with hand coordinates positions
+# Is used as a base dataset for other datasets
 import os
 import pickle
 
@@ -6,7 +8,7 @@ import cv2
 import matplotlib.pyplot as plt
 
 # get symbols from "symbols" file
-with open("symbols", "r") as file:
+with open("../symbols", "r") as file:
     lines = file.read().splitlines()
     symbols = lines[0].strip()
 
@@ -17,7 +19,7 @@ mp_drawing_styles = mp.solutions.drawing_styles
 # change confidence detection if necessary
 hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3)
 
-DATA_DIR = './data'
+DATA_DIR = '../imagens'
 
 data = []   # features (input of model)
 labels = []  # symbols (output of model)
@@ -36,19 +38,18 @@ for dir_ in symbols:
         # only adds data if there is only one hand detected
         if len(results.multi_hand_landmarks) == 1:
             hand_landmarks = results.multi_hand_landmarks[0]
-            # point 0 is used as an origin for the coordinate system
-            x_0 = hand_landmarks.landmark[0].x
-            y_0 = hand_landmarks.landmark[0].y
             for i in range(1, len(hand_landmarks.landmark)):
                 x = hand_landmarks.landmark[i].x
                 y = hand_landmarks.landmark[i].y
-                data_aux.append(x - x_0)
-                data_aux.append(y - y_0)
+                z = hand_landmarks.landmark[i].z
+                data_aux.append(x)
+                data_aux.append(y)
+                data_aux.append(z)
 
             data.append(data_aux)
             labels.append(dir_)
 
-f = open('data.pickle', 'wb')
+f = open('full_data.pickle', 'wb')
 pickle.dump({'data': data, 'labels': labels}, f)
 f.close()
 
