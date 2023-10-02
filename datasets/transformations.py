@@ -7,7 +7,7 @@ import pickle
 def minimum (features):
     # get smallest x and y
     min_x, min_y = features[0], features[1]
-    for i, value in enumerate(features):
+    for i, value in enumerate(features[0:-1]):
         # x value
         if i % 3 == 0:
             min_x = min(min_x, value)
@@ -24,5 +24,7 @@ def minimum (features):
         # y value
         elif i % 3 == 1:
             new_features.append(value - min_y)
+    # adds back the orientation of hand (left/right)
+    new_features.append(features[-1])
     return new_features
     

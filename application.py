@@ -66,6 +66,7 @@ while True:
 
         x2 = int(x_max * W) - 10
         y2 = int(y_max * H) - 10
+        data_aux.append(results.multi_handedness[0].classification[0].label == "Left")
 
         # prediction
         input_values = minimum(data_aux)

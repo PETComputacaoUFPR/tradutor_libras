@@ -54,7 +54,9 @@ for dir_ in symbols:
                 data_aux.append(x)
                 data_aux.append(y)
                 data_aux.append(z)
-
+            # if hand is left or right
+            is_left = (results.multi_handedness[0].classification[0].label == "Left")
+            data_aux.append(int(is_left))
             data["features"].append(data_aux)
             data["labels"].append(dir_)
 
