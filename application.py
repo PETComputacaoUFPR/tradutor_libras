@@ -1,15 +1,19 @@
 # Application of model
 import pickle
+import sys
 
 import cv2
 import mediapipe as mp
 import numpy as np
 
+sys.path.insert(1, "./datasets")
+from transformations import minimum
+
 # controls min probability to classify class
 MIN_PROB = 0.0
 
 # Loads model
-model_dict = pickle.load(open('./models/model.p', 'rb'))
+model_dict = pickle.load(open('./models/minimum_model.p', 'rb'))
 model = model_dict['model']
 
 # Creates panel and hand application
@@ -64,10 +68,11 @@ while True:
         y2 = int(y_max * H) - 10
 
         # prediction
-        if max(model.predict_proba([np.asarray(data_aux)])[0]) < MIN_PROB:
+        input_values = minimum(data_aux)
+        if max(model.predict_proba([np.asarray(input_values)])[0]) < MIN_PROB:
             predicted_character = ''
         else:
-            prediction = model.predict([np.asarray(data_aux)])
+            prediction = model.predict([np.asarray(input_values)])
             predicted_character = prediction[0]
 
         cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 0), 4)
