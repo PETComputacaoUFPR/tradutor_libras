@@ -21,7 +21,7 @@ mp_drawing_styles = mp.solutions.drawing_styles
 hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3)
 
 # path of images
-DATA_DIR = '../imagens'
+DATA_DIR = '../images'
 
 data = []   # features (input of model)
 labels = []  # symbols (output of model)
@@ -52,7 +52,7 @@ for dir_ in symbols:
             labels.append(dir_)
 
 # Creates dataset
-f = open('full_data.pickle', 'wb')
+f = open('base_dataset.pickle', 'wb')
 pickle.dump({'data': data, 'labels': labels}, f)
 f.close()
 

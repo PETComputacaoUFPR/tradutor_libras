@@ -3,8 +3,6 @@ import os
 import cv2
 
 DATASET_SIZE = 10  # how many images will be collected
-name = input("Your name: ")  # your name (to differentiate images)
-
 
 # get symbols from "symbols" file
 with open("symbols", "r") as file:
@@ -12,7 +10,7 @@ with open("symbols", "r") as file:
     symbols = lines[0].strip()
 
 # creates images path
-DATA_DIR = './imagens'
+DATA_DIR = './images'
 if not os.path.exists(DATA_DIR):
     os.makedirs(DATA_DIR)
 
@@ -43,7 +41,7 @@ for symbol in symbols:
         # the output for pressing ENTER is 13
         if cv2.waitKey(1) == 13:
             print('image {} collected'.format(counter))
-            cv2.imwrite(os.path.join(DATA_DIR, symbol, '{}_{}.jpg'.format(name, counter)), frame)
+            cv2.imwrite(os.path.join(DATA_DIR, symbol, '_{}.jpg'.format(counter)), frame)
             counter += 1
         cv2.imshow('frame', frame)
 
