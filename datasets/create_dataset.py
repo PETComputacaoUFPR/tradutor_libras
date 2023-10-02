@@ -7,6 +7,10 @@ import mediapipe as mp
 import cv2
 import matplotlib.pyplot as plt
 
+# name of file
+FILE_NAME = input("file name (without .pickle): ")
+FILE_NAME += ".pickle"
+
 # get symbols from "symbols" file
 with open("../symbols", "r") as file:
     lines = file.read().splitlines()
@@ -21,19 +25,22 @@ mp_drawing_styles = mp.solutions.drawing_styles
 hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3)
 
 # path of images
-DATA_DIR = '../images'
+IMAGES_DIR = '../images'
 
-data = []   # features (input of model)
-labels = []  # symbols (output of model)
+# destiny directory
+DATA_DIR = "./data"
+
+# dictionary that will save data for dataset
+data = {"features": [], "labels": []}
 
 # loops through directories (each named with a label)
 for dir_ in symbols:
     # loops through images
-    for img_path in os.listdir(os.path.join(DATA_DIR, dir_)):
+    for img_path in os.listdir(os.path.join(IMAGES_DIR, dir_)):
         data_aux = []
 
         # reads image and converts it to RGB
-        img = cv2.imread(os.path.join(DATA_DIR, dir_, img_path))
+        img = cv2.imread(os.path.join(IMAGES_DIR, dir_, img_path))
         img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         results = hands.process(img_rgb)
 
@@ -48,12 +55,11 @@ for dir_ in symbols:
                 data_aux.append(y)
                 data_aux.append(z)
 
-            data.append(data_aux)
-            labels.append(dir_)
+            data["features"].append(data_aux)
+            data["labels"].append(dir_)
 
 # Creates dataset
-f = open('base_dataset.pickle', 'wb')
-pickle.dump({'data': data, 'labels': labels}, f)
-f.close()
+with open(os.path.join(DATA_DIR, FILE_NAME), "wb") as dataset:
+    pickle.dump(data, dataset)
 
 print("Dataset successfully created!")

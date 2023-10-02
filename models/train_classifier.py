@@ -7,12 +7,11 @@ from sklearn.metrics import accuracy_score
 import numpy as np
 
 # Loads dataset
-data_dict = pickle.load(open('../datasets/base_dataset.pickle', 'rb'))
-data = np.asarray(data_dict['data'])
-labels = np.asarray(data_dict['labels'])
+data = pickle.load(open('../datasets/base_dataset.pickle', 'rb'))
 
 # Train/Test split
-x_train, x_test, y_train, y_test = train_test_split(data, labels, test_size=0.2, shuffle=True, stratify=labels)
+x_train, x_test, y_train, y_test = train_test_split(data["features"], 
+    data["labels"], test_size=0.2, shuffle=True, stratify=data["labels"])
 
 # Trains Model
 model = RandomForestClassifier()
