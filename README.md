@@ -64,3 +64,8 @@ Execute o código "application.py"
 python3 application.py
 ```
 
+## Algumas dicas
+Dependendo da máquina, os comando acimas podem usar "python" ou "python3".<br><br>
+Nos arquivos que usam camera, pode sernecessário mudar o argumento do cv2.VideoCapture. Para a maioria das máquinas, usar 0 como argumento deve funcionar, mas dependendo da situação pode ser necessário usar outros valores (por exemplo, se tiver mais de uma câmera ligada ao sistema). Nesses casos, 1 ou 2 como argumento devem funcionar. <br><br>
+O padrão de coleta de imagens é 10 por classe. Isso pode ser alterado no "collect_images.py", na variável DATASET_SIZE. Os símbolos a serem capturados estão no arquivo "symbols" (eles devem ser símbolos de um caracter obrigatoriamente").
+
