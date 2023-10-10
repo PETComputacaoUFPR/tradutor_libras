@@ -1,5 +1,6 @@
 # Application of model
 import pickle
+import joblib
 import sys
 
 import cv2
@@ -70,6 +71,8 @@ while True:
 
         # prediction
         input_values = minimum(data_aux)
+        scaler = joblib.load("models/scaler.joblib")
+        input_values = scaler.transform(np.reshape(input_values, (1,-1)))[0]
         if max(model.predict_proba([np.asarray(input_values)])[0]) < MIN_PROB:
             predicted_character = ''
         else:
