@@ -14,7 +14,7 @@ from transformations import minimum
 MIN_PROB = 0.0
 
 # Loads model
-model_dict = pickle.load(open('./models/svm_minimum.p', 'rb'))
+model_dict = pickle.load(open('./models/minimum_model.p', 'rb'))
 model = model_dict['model']
 
 # Creates panel and hand application
@@ -73,11 +73,11 @@ while True:
         input_values = minimum(data_aux)
         scaler = joblib.load("models/scaler.joblib")
         input_values = scaler.transform(np.reshape(input_values, (1,-1)))[0]
-        #if max(model.predict_proba([np.asarray(input_values)])[0]) < MIN_PROB:
-         #   predicted_character = ''
-        #else:
-        prediction = model.predict([np.asarray(input_values)])
-        predicted_character = prediction[0]
+        if max(model.predict_proba([np.asarray(input_values)])[0]) < MIN_PROB:
+            predicted_character = ''
+        else:
+            prediction = model.predict([np.asarray(input_values)])
+            predicted_character = prediction[0]
 
         cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 0), 4)
         cv2.putText(frame, predicted_character, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 0, 0), 3,
