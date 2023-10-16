@@ -28,7 +28,7 @@ pip install mediapipe
 ## Como usar
 ### Coleta de Dados
 Para escolher os símbolos a serem coletados, edite o arquivo "symbols" <br><br>
-Para coletar as imagens, execute o arquivo "collect_imgs.py" <br>
+Para coletar as imagens, execute o arquivo "collect_imgs.py" no diretório padrão:
 ```console
 python3 collect_images.py
 ```
@@ -37,29 +37,33 @@ O terminal irá avisar qual imagem está sendo coletada. Para que a imagem seja 
 O código consegue reconhecer quais símbolos faltam e quantas imagens, então você pode parar a coleta no meio e continuar depois.
 
 ### Criando dataset parcial
-Execute o código "create_dataset.py"
+Execute o código "create_dataset.py" dentro do diretório "datasets/":
 ```console
-python3 ./datasets/create_dataset.py
+cd datasets/
+python3 create_dataset.py
 ```
 <br>
 O terminal irá requisitar o nome do arquivo. De preferência, nomeie "partial_identificador", onde identificador é seu nome, por exemplo. Dessa forma, no passo seguinte esses dados serão adicionados ao modelo principal.
 
 ### Criando dataset base
-Execute o código "merge_data.py"
+Execute o código "merge_data.py" dentro do diretório "datasets/":
 ```console
-python3 ./datasets/merge_data.py
+cd datasets/
+python3 merge_data.py
 ```
 <br>
 Os dados serão salvos no arquivo "datasets/base_dataset.pickle".
 
 ### Treinando o modelo
-Execute o códgo "train_classifier.py"
+Há vários modelos no projeto, pois eles estão sendo testados para escolher o melhor.
+Execute o código "forest_minimum_classifier.py" dentro do diretório "models/":
 ```console
-python3 ./models/train_classifier.py
+cd models/
+python3 forest_minimum_classifier.py
 ```
 
 ### Criando a aplicação
-Execute o código "application.py" 
+Execute o código "application.py" no diretório padrão:
 ```console
 python3 application.py
 ```
