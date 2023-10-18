@@ -2,6 +2,7 @@
 import pickle
 import joblib
 import sys
+import os
 
 import cv2
 import mediapipe as mp
@@ -13,8 +14,12 @@ from transformations import minimum
 # controls min probability to classify class
 MIN_PROB = 0.0
 
+# directory of this file
+WORKING_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)))
+
 # Loads model
-model_dict = pickle.load(open('./models/minimum_model.p', 'rb'))
+model_path = os.path.join(WORKING_DIR, "models/minimum_model.p")
+model_dict = pickle.load(open(model_path, 'rb'))
 model = model_dict['model']
 
 # Creates panel and hand application

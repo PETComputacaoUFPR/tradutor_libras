@@ -4,16 +4,19 @@ import cv2
 
 DATASET_SIZE = 10  # how many images will be collected
 
+# directory of this file
+WORKING_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)))
+
 # get symbols from "symbols" file
-with open("symbols", "r") as file:
+symbols_path = os.path.join(WORKING_DIR, "symbols")
+with open(symbols_path, "r") as file:
     lines = file.read().splitlines()
     symbols = lines[0].strip()
 
 # creates images path
-DATA_DIR = './images'
+DATA_DIR = os.path.join(WORKING_DIR, "images")
 if not os.path.exists(DATA_DIR):
     os.makedirs(DATA_DIR)
-
 
 # for some reason, the code prints an error the first time it runs the frame
 # that's literally the only usage of this code block

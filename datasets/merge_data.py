@@ -1,4 +1,4 @@
-# gambiarra para poder unir arquivos pickle de diferentes pessoas
+# unites datasets of different people into one
 
 import os
 import pickle
@@ -6,7 +6,10 @@ import pickle
 # final dataset
 data = {"features": [], "labels": []}
 
-DATA_DIR = "./data"
+# directory of this file
+WORKING_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)))
+
+DATA_DIR = os.path.join(WORKING_DIR, "data/")
 
 # loops through datasets
 for dataset in os.listdir(DATA_DIR):
@@ -18,7 +21,8 @@ for dataset in os.listdir(DATA_DIR):
     print(f"{dataset} merged")
 
 # saves as new dataset
-with open("base_dataset.pickle", "wb") as dataset:
+dataset_path = os.path.join(WORKING_DIR, "base_dataset.pickle")
+with open(dataset_path, "wb") as dataset:
     pickle.dump(data, dataset)
 
 print("Dataset merged sucessfuly!")

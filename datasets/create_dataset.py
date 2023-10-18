@@ -7,12 +7,16 @@ import mediapipe as mp
 import cv2
 import matplotlib.pyplot as plt
 
+# directory of this file
+WORKING_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)))
+
 # name of file
 FILE_NAME = input("file name (without .pickle): ")
 FILE_NAME += ".pickle"
 
 # get symbols from "symbols" file
-with open("../symbols", "r") as file:
+symbols_path = os.path.join(WORKING_DIR, "../symbols")
+with open(symbols_path, "r") as file:
     lines = file.read().splitlines()
     symbols = lines[0].strip()
 
@@ -25,10 +29,10 @@ mp_drawing_styles = mp.solutions.drawing_styles
 hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3)
 
 # path of images
-IMAGES_DIR = '../images'
+IMAGES_DIR = os.path.join(WORKING_DIR, "../images")
 
 # destiny directory
-DATA_DIR = "./data"
+DATA_DIR = os.path.join(WORKING_DIR, "/data")
 
 # dictionary that will save data for dataset
 data = {"features": [], "labels": []}
