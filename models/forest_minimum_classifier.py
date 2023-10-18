@@ -21,10 +21,6 @@ new_features = []
 for observation in data["features"]:
     new_features.append(minimum(observation))
 
-# MinMax Scaling
-scaler = MinMaxScaler()
-new_features = scaler.fit_transform(new_features)
-
 # Train/Test split
 x_train, x_test, y_train, y_test = train_test_split(new_features, 
     data["labels"], test_size=0.2, shuffle=True, stratify=data["labels"])
@@ -42,4 +38,3 @@ print('{}% of samples were classified correctly !'.format(score * 100))
 f = open('minimum_model.p', 'wb')
 pickle.dump({'model': model}, f)
 f.close()
-joblib.dump(scaler, "scaler.joblib")

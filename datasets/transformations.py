@@ -30,16 +30,18 @@ def minimum (features):
     return new_features
 
 
-# uses 2D coordinate system with origin in point -
+# uses 3D coordinate system with origin in point 0
 def geometric (features):
     # gets values from origin (point 0)
     x_0, y_0, z_0 = features[0], features[1], features[2]
 
     # loops through other points (last one is left/right hand)
+    new_features = []
     for i, value in enumerate(features[3:-1:3]):
-        x, y = features[i], features[i+1]
+        x, y, z = features[i], features[i+1], features[i+2]
         new_features.append(x - x_0)
         new_features.append(y - y_0)
+        new_features.append(y - z_0)
     new_features.append(features[-1])
     return new_features
     
