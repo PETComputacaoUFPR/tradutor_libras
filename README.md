@@ -26,46 +26,44 @@ pip install mediapipe
 ```
 
 ## Como usar
+Caso queira apenas usar a aplicação diretamente, execute o último passo apenas.
 ### Coleta de Dados
 Para escolher os símbolos a serem coletados, edite o arquivo "symbols" <br><br>
-Para coletar as imagens, execute o arquivo "collect_imgs.py" no diretório padrão:
+Para coletar as imagens, execute o arquivo "collect_imgs.py":
 ```console
-python3 collect_images.py
+python3 ./collect_images.py
 ```
 <br>
 O terminal irá avisar qual imagem está sendo coletada. Para que a imagem seja salva, aperte a tecla ENTER <br><br>
 O código consegue reconhecer quais símbolos faltam e quantas imagens, então você pode parar a coleta no meio e continuar depois.
 
 ### Criando dataset parcial
-Execute o código "create_dataset.py" dentro do diretório "datasets/":
+Execute o código "create_dataset.py":
 ```console
-cd datasets/
-python3 create_dataset.py
+python3 datasets/create_dataset.py
 ```
 <br>
 O terminal irá requisitar o nome do arquivo. De preferência, nomeie "partial_identificador", onde identificador é seu nome, por exemplo. Dessa forma, no passo seguinte esses dados serão adicionados ao modelo principal.
 
 ### Criando dataset base
-Execute o código "merge_data.py" dentro do diretório "datasets/":
+Execute o código "merge_data.py":
 ```console
-cd datasets/
-python3 merge_data.py
+python3 datasets/merge_data.py
 ```
 <br>
 Os dados serão salvos no arquivo "datasets/base_dataset.pickle".
 
 ### Treinando o modelo
 Há vários modelos no projeto, pois eles estão sendo testados para escolher o melhor.
-Execute o código "forest_minimum_classifier.py" dentro do diretório "models/":
+Execute o código "forest_minimum_classifier.py":
 ```console
-cd models/
-python3 forest_minimum_classifier.py
+python3 models/forest_minimum_classifier.py
 ```
 
 ### Criando a aplicação
-Execute o código "application.py" no diretório padrão:
+Execute o código "application.py":
 ```console
-python3 application.py
+python3 ./application.py
 ```
 
 ## Algumas dicas
