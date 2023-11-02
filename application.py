@@ -19,6 +19,9 @@ def closeApp(exitCode):
 # controls min probability to classify class
 MIN_PROB = 0.0
 
+# Exit key code
+QUIT_KEY = 113
+
 # directory of this file
 WORKING_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)))
 
@@ -41,7 +44,7 @@ mp_drawing_styles = mp.solutions.drawing_styles
 # Only one hand will be detected per frame
 hands = mp_hands.Hands(static_image_mode=True, max_num_hands=1, min_detection_confidence=0.3)
 
-while True:
+while cv2.waitKeyEx(1) != QUIT_KEY:
     # Creates frame and changed color system to RGB
     ret, frame = cap.read()
     H, W, _ = frame.shape
@@ -97,7 +100,6 @@ while True:
                     cv2.LINE_AA)
 
     cv2.imshow('frame', frame)
-    cv2.waitKey(1)
 
 
 # Destroys panel
