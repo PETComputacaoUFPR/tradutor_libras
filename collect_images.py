@@ -33,13 +33,13 @@ for symbol in symbols:
     symbol_path = os.path.join(DATA_DIR, symbol)
 
     # only collects images if there are less images than DATASET_SIZE
-    if len(symbol_path) >= DATASET_SIZE:
+    if len(os.listdir(symbol_path)) >= DATASET_SIZE:
         continue
 
     # collects remaining images
     print('Collecting data for class {}'.format(symbol))
     counter = len(os.listdir(symbol_path)) + 1
-    while counter <= dataset_size:
+    while counter <= DATASET_SIZE:
         ret, frame = cap.read()
         # the output for pressing ENTER is 13
         if cv2.waitKey(1) == 13:

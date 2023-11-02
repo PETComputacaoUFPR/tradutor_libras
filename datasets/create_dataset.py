@@ -32,7 +32,7 @@ hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3)
 IMAGES_DIR = os.path.join(WORKING_DIR, "../images")
 
 # destiny directory
-DATA_DIR = os.path.join(WORKING_DIR, "/data")
+DATA_DIR = os.path.join(WORKING_DIR, "data")
 
 # dictionary that will save data for dataset
 data = {"features": [], "labels": []}
