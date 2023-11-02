@@ -11,6 +11,11 @@ import numpy as np
 sys.path.insert(1, "./datasets")
 from transformations import minimum
 
+def closeApp(exitCode):
+    cap.release()
+    cv2.destroyAllWindows()
+    exit(exitCode)
+
 # controls min probability to classify class
 MIN_PROB = 0.0
 
@@ -24,6 +29,11 @@ model = model_dict['model']
 
 # Creates panel and hand application
 cap = cv2.VideoCapture(0)
+if not cap.isOpened():
+    print("\033[31mNão foi possível abrir a camera, saindo do programa !!!\033[0m")
+    closeApp(1)
+else:
+    print("Camera inicada")
 mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
@@ -91,5 +101,4 @@ while True:
 
 
 # Destroys panel
-cap.release()
-cv2.destroyAllWindows()
+closeApp(0)
