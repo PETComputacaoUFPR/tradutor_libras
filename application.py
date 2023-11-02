@@ -22,6 +22,9 @@ MIN_PROB = 0.0
 # Exit key code
 QUIT_KEY = 113
 
+# Window name
+WINDOW_NAME = "App"
+
 # directory of this file
 WORKING_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)))
 
@@ -30,13 +33,18 @@ model_path = os.path.join(WORKING_DIR, "models/minimum_model.p")
 model_dict = pickle.load(open(model_path, 'rb'))
 model = model_dict['model']
 
-# Creates panel and hand application
+# Initi video cpture and verify camera
 cap = cv2.VideoCapture(0)
 if not cap.isOpened():
     print("\033[31mNão foi possível abrir a camera, saindo do programa !!!\033[0m")
     closeApp(1)
 else:
     print("Camera inicada")
+
+# Create cv2 window and close callback
+cv2.namedWindow(WINDOW_NAME)
+
+# Creates panel and hand application
 mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
@@ -99,7 +107,10 @@ while cv2.waitKeyEx(1) != QUIT_KEY:
         cv2.putText(frame, predicted_character, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 0, 0), 3,
                     cv2.LINE_AA)
 
-    cv2.imshow('frame', frame)
+    # Close wwindow when "x" clicked
+    if not cv2.getWindowProperty(WINDOW_NAME, cv2.WND_PROP_VISIBLE):
+        break
+    cv2.imshow(WINDOW_NAME, frame)
 
 
 # Destroys panel
