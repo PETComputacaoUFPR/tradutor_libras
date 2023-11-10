@@ -34,8 +34,10 @@ Para coletar as imagens, execute o arquivo "collect_imgs.py":
 python3 ./collect_images.py
 ```
 <br>
-O terminal irá avisar qual imagem está sendo coletada. Para que a imagem seja salva, aperte a tecla ENTER <br><br>
-O código consegue reconhecer quais símbolos faltam e quantas imagens, então você pode parar a coleta no meio e continuar depois.
+Por padrão, são coletadas 20 imagens de cada letra. Isso pode ser mudado nsse código na variável DATASET_SIZE.
+O terminal irá avisar qual imagem está sendo coletada. Para que a imagem seja salva, aperte a tecla ENTER ou o botão esquerdo do mouse.<br><br>
+O código consegue reconhecer quais símbolos faltam e quantas imagens, então você pode parar a coleta no meio e continuar depois.<br><br>
+Caso mais de uma mão seja reconhecida na imagem, o modelo não irá salvar os dados para evitar ambiguidade. Portanto, garanta que apenas uma mão esteja aparecendo durante a coleta. 
 
 ### Criando dataset parcial
 Execute o código "create_dataset.py":
@@ -68,6 +70,6 @@ python3 ./application.py
 
 ## Algumas dicas
 Dependendo da máquina, os comando acimas podem usar "python" ou "python3".<br><br>
-Nos arquivos que usam camera, pode sernecessário mudar o argumento do cv2.VideoCapture. Para a maioria das máquinas, usar 0 como argumento deve funcionar, mas dependendo da situação pode ser necessário usar outros valores (por exemplo, se tiver mais de uma câmera ligada ao sistema). Nesses casos, 1 ou 2 como argumento devem funcionar. <br><br>
-O padrão de coleta de imagens é 10 por classe. Isso pode ser alterado no "collect_images.py", na variável DATASET_SIZE. Os símbolos a serem capturados estão no arquivo "symbols" (eles devem ser símbolos de um caracter obrigatoriamente").
+Nos arquivos que usam câmera, pode ser necessário mudar o argumento do cv2.VideoCapture. Para a maioria das máquinas, usar 0 como argumento deve funcionar, mas dependendo da situação pode ser necessário usar outros valores (por exemplo, se tiver mais de uma câmera ligada ao sistema). Nesses casos, 1 ou 2 como argumento devem funcionar. <br><br>
+Os símbolos a serem capturados estão no arquivo "symbols" (eles devem ser símbolos de um caracter obrigatoriamente").
 
