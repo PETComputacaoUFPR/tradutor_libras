@@ -38,7 +38,11 @@ DATA_DIR = os.path.join(WORKING_DIR, "data")
 data = {"features": [], "labels": []}
 
 # loops through directories (each named with a label)
+total_counter = 0
+total_size = 0
 for dir_ in symbols:
+    counter = 0
+    symbol_size = len(os.listdir(os.path.join(IMAGES_DIR, dir_)));
     # loops through images
     for img_path in os.listdir(os.path.join(IMAGES_DIR, dir_)):
         data_aux = []
@@ -50,6 +54,7 @@ for dir_ in symbols:
 
         # only adds data if there is only one hand detected
         if len(results.multi_hand_landmarks) == 1:
+            counter += 1
             hand_landmarks = results.multi_hand_landmarks[0]
             for i in range(len(hand_landmarks.landmark)):
                 x = hand_landmarks.landmark[i].x
@@ -63,9 +68,13 @@ for dir_ in symbols:
             data_aux.append(int(is_left))
             data["features"].append(data_aux)
             data["labels"].append(dir_)
+    print(f"{dir_}: {counter}/{symbol_size}")
+    total_counter += counter
+    total_size += symbol_size
 
 # Creates dataset
 with open(os.path.join(DATA_DIR, FILE_NAME), "wb") as dataset:
     pickle.dump(data, dataset)
 
 print("Dataset successfully created!")
+print(f"Images saved: {total_counter}/{total_size}") 
