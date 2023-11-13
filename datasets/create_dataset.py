@@ -9,13 +9,15 @@ import matplotlib.pyplot as plt
 
 # directory of this file
 WORKING_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)))
+def path_to(p):
+    return os.path.join(WORKING_DIR, p)
 
 # name of file
 FILE_NAME = input("file name (without .pickle): ")
 FILE_NAME += ".pickle"
 
 # get symbols from "symbols" file
-symbols_path = os.path.join(WORKING_DIR, "../symbols")
+symbols_path = path_to("../symbols")
 with open(symbols_path, "r") as file:
     lines = file.read().splitlines()
     symbols = lines[0].strip()
@@ -29,10 +31,10 @@ mp_drawing_styles = mp.solutions.drawing_styles
 hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3)
 
 # path of images
-IMAGES_DIR = os.path.join(WORKING_DIR, "../images")
+IMAGES_DIR = path_to("../images")
 
 # destiny directory
-DATA_DIR = os.path.join(WORKING_DIR, "data")
+DATA_DIR = path_to("data")
 
 # dictionary that will save data for dataset
 data = {"features": [], "labels": []}
@@ -77,4 +79,4 @@ with open(os.path.join(DATA_DIR, FILE_NAME), "wb") as dataset:
     pickle.dump(data, dataset)
 
 print("Dataset successfully created!")
-print(f"Images saved: {total_counter}/{total_size}") 
+print(f"Images saved: {total_counter}/{total_size}")

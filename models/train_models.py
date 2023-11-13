@@ -1,16 +1,18 @@
 # trains all classifiers
 # classifiers are choosen in below variables
-
-# directory of this file
-import os
-WORKING_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)))
-
 # transformations in dataset
 import sys
-sys.path.insert(1, os.path.join(WORKING_DIR, "../datasets"))
+import os
+
+# directory of this file
+WORKING_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)))
+def path_to(p):
+    return os.path.join(WORKING_DIR, p)
+
+sys.path.append(path_to("../datasets"))
 from transformations import minimum, geometric, vectorial2D
 
-# models 
+# models
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
@@ -43,11 +45,11 @@ def train_model (model, data, scaling=False):
     # test model
     y_predict = model.predict(x_test)
     score = accuracy_score(y_predict, y_test)
-    
+
     return model, score
 
 # get base_dataset
-data_path = os.path.join(WORKING_DIR, "../datasets/base_dataset.pickle")
+data_path = path_to("../datasets/base_dataset.pickle")
 data = pickle.load(open(data_path, "rb"))
 
 # list of models and their names (names only to make prints easier)
