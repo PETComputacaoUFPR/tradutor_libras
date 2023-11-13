@@ -17,7 +17,9 @@ for dataset in os.listdir(DATA_DIR):
     if ("partial" not in dataset or "pickle" not in dataset):
        continue
     with open(os.path.join(DATA_DIR, dataset), "rb") as new_data:
-        data.update(pickle.load(new_data))
+        data_aux = pickle.load(new_data)
+        data["features"].extend(data_aux["features"])
+        data["labels"].extend(data_aux["labels"])
     print(f"{dataset} merged")
 
 # saves as new dataset
