@@ -53,7 +53,7 @@ for dir_ in symbols:
         results = hands.process(img_rgb)
 
         # only adds data if there is only one hand detected
-        if len(results.multi_hand_landmarks) == 1:
+        if results.multi_hand_landmarks is not None and len(results.multi_hand_landmarks) == 1:
             counter += 1
             hand_landmarks = results.multi_hand_landmarks[0]
             for i in range(len(hand_landmarks.landmark)):
