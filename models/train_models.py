@@ -14,7 +14,7 @@ from transformations import minimum, geometric, vectorial2D
 
 # models
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.linear_model import LogisticRegression
+from sklearn.linear_model import SGDClassifier
 from sklearn.svm import SVC
 
 # other modules
@@ -92,7 +92,7 @@ data = pickle.load(open(data_path, "rb"))
 # list of models and their names (names only to make prints easier)
 models = [
     {"name": "RandomForest", "classifier": RandomForestClassifier(n_jobs=-1), "scale": False},
-    {"name": "LogisticRegression", "classifier": LogisticRegression(), "scale": True},
+    {"name": "LogisticRegression", "classifier": SGDClassifier(loss="log_loss"), "scale": True},
     {"name": "SVM", "classifier": SVC(), "scale": True}
 ]
 
