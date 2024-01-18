@@ -16,11 +16,13 @@ from transformations import minimum, geometric, vectorial2D
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import SGDClassifier
 from sklearn.svm import SVC
+from sklearn.neighbors import KNeighborsClassifier 
 
 # other modules
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import recall_score, make_scorer
 from sklearn.preprocessing import MinMaxScaler
+import pandas as pd
 import numpy as np
 import pickle
 import joblib
@@ -93,7 +95,8 @@ data = pickle.load(open(data_path, "rb"))
 models = [
     {"name": "RandomForest", "classifier": RandomForestClassifier(n_jobs=-1), "scale": False},
     {"name": "LogisticRegression", "classifier": SGDClassifier(loss="log_loss"), "scale": True},
-    {"name": "SVM", "classifier": SVC(), "scale": True}
+    {"name": "SVM", "classifier": SVC(), "scale": True},
+    {"name": "KNN", "classifier": KNeighborsClassifier(), "scale": True}
 ]
 
 # list of changed_models and their names (names only to make prints easier)
@@ -108,6 +111,7 @@ for option in changed_datasets:
         new_features.append(option["transformation"](observation))
     option["dataset"]["features"] = new_features
     option["dataset"]["labels"] = data["labels"]
+    option["dataset"]["person_id"] = data["person_id"]
 
 # trains all models and prints their results
 for model in models:
