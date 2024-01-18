@@ -4,7 +4,7 @@ import os
 import pickle
 
 # final dataset
-data = {"features": [], "labels": []}
+data = {"person_id": [], "features": [], "labels": []}
 
 # directory of this file
 WORKING_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)))
@@ -18,6 +18,7 @@ for dataset in os.listdir(DATA_DIR):
        continue
     with open(os.path.join(DATA_DIR, dataset), "rb") as new_data:
         data_aux = pickle.load(new_data)
+        data["person_id"].extend(len(data_aux["features"]) * [dataset])
         data["features"].extend(data_aux["features"])
         data["labels"].extend(data_aux["labels"])
     print(f"{dataset} merged")
