@@ -19,11 +19,48 @@ from sklearn.svm import SVC
 
 # other modules
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import recall_score, make_scorer
 from sklearn.preprocessing import MinMaxScaler
 import numpy as np
 import pickle
 import joblib
+
+# function that calculates weighted_accuracy
+# weights are basead on the frequency of the letters in the portuguese alphabet 
+# source: https://pt.wikipedia.org/wiki/Alfabeto_portugu%C3%AAs#Frequ%C3%AAncia_da_ocorr%C3%AAncia_de_letras
+# H, K, J, X and Z are not present
+LETTERS_FREQUENCY = [
+    14.63,
+    1.04,
+    3.88,
+    5.01,
+    12.57,
+    1.02,
+    1.30,
+    6.18,
+    2.78,
+    4.74,
+    5.05,
+    10.73,
+    2.52,
+    1.20,
+    6.53,
+    7.81,
+    4.34,
+    4.63,
+    1.67,
+    0.01,
+    0.01,
+]
+def weighted_accuracy(y_true, y_pred):
+    recall_array = recall_score(y_true, y_pred, average=None)
+    weights_total = 0
+    result = 0
+    for recall, weight in zip(recall_array, LETTERS_FREQUENCY):
+        weights_total += weight
+        result += recall * weight
+    return result / weights_total
+weighted_accuracy_score = make_scorer(weighted_accuracy)
 
 
 # functions that train the models
@@ -44,7 +81,7 @@ def train_model (model, data, scaling=False):
 
     # test model
     y_predict = model.predict(x_test)
-    score = accuracy_score(y_predict, y_test)
+    score = weighted_accuracy(y_test, y_predict)
 
     return model, score
 
@@ -54,7 +91,7 @@ data = pickle.load(open(data_path, "rb"))
 
 # list of models and their names (names only to make prints easier)
 models = [
-    {"name": "RandomForest", "classifier": RandomForestClassifier(), "scale": False},
+    {"name": "RandomForest", "classifier": RandomForestClassifier(n_jobs=-1), "scale": False},
     {"name": "LogisticRegression", "classifier": LogisticRegression(), "scale": True},
     {"name": "SVM", "classifier": SVC(), "scale": True}
 ]
