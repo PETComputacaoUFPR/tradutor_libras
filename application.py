@@ -8,8 +8,8 @@ import cv2
 import mediapipe as mp
 import numpy as np
 
-sys.path.insert(1, "./datasets")
-from transformations import minimum
+sys.path.insert(1, "./models")
+from transformations import geometric
 
 def closeApp(exitCode):
     cap.release()
@@ -29,9 +29,8 @@ WINDOW_NAME = "App"
 WORKING_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)))
 
 # Loads model
-model_path = os.path.join(WORKING_DIR, "models/minimum_model.p")
-model_dict = pickle.load(open(model_path, 'rb'))
-model = model_dict['model']
+model_path = os.path.join(WORKING_DIR, "models/best_model.sav")
+model = pickle.load(open(model_path, 'rb'))
 
 # Initi video cpture and verify camera
 cap = cv2.VideoCapture(0)
@@ -96,12 +95,8 @@ while cv2.waitKeyEx(1) != QUIT_KEY:
         data_aux.append(results.multi_handedness[0].classification[0].label == "Left")
 
         # prediction
-        input_values = minimum(data_aux)
-        if max(model.predict_proba([np.asarray(input_values)])[0]) < MIN_PROB:
-            predicted_character = ''
-        else:
-            prediction = model.predict([np.asarray(input_values)])
-            predicted_character = prediction[0]
+        input_values = geometric(data_aux)
+        predicted_character = model.predict([input_values])[0]
 
         cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 0), 4)
         cv2.putText(frame, predicted_character, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 0, 0), 3,
