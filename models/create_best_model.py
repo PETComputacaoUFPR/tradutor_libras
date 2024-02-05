@@ -34,4 +34,4 @@ for observation in data["features"]:
 svm = SVC(kernel="rbf", C=30, gamma=5)
 svm.fit(geometric_X, data["labels"])
 
-pickle.dump(svm, open("best_model.sav", "wb"))
+pickle.dump(svm, open(path_to("best_model.sav"), "wb"))
