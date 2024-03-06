@@ -69,4 +69,4 @@ Dependendo da máquina, os comando acimas podem usar "python" ou "python3".
 
 Nos arquivos que usam câmera, pode ser necessário mudar o argumento do cv2.VideoCapture. Para a maioria das máquinas, usar 0 como argumento deve funcionar, mas dependendo da situação pode ser necessário usar outros valores (por exemplo, se tiver mais de uma câmera ligada ao sistema). Nesses casos, 1 ou 2 como argumento devem funcionar.
 
-## Dificuldades com Python -> Vale ressaltar a existência do material do curso básico da linguagem dentro do repositório do PET e a gravação nos arquivos do projeto da aula com o material.
+## Dificuldades com Python -> Vale ressaltar a existência do material do curso básico da linguagem dentro do repositório do PET e a gravação da aula com o material nos arquivos do projeto.
