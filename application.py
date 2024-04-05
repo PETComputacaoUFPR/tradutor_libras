@@ -9,7 +9,7 @@ import mediapipe as mp
 import numpy as np
 
 sys.path.insert(1, "./models")
-from transformations import geometric
+from transformations import geometric2D
 
 def closeApp(exitCode):
     cap.release()
@@ -95,7 +95,7 @@ while cv2.waitKeyEx(1) != QUIT_KEY:
         data_aux.append(results.multi_handedness[0].classification[0].label == "Left")
 
         # prediction
-        input_values = geometric(data_aux)
+        input_values = geometric2D(data_aux)
         predicted_character = model.predict([input_values])[0]
 
         cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 0), 4)

@@ -9,8 +9,12 @@ WORKING_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)))
 def path_to(p):
     return os.path.join(WORKING_DIR, p)
 
-sys.path.append(path_to("../datasets"))
-from transformations import minimum, geometric, vectorial2D
+from transformations import minimum, geometric
+def minimum2D(features):
+    return minimum(features, include_z=False)
+
+def geometric2D(features):
+    return geometric(features, include_z=False)
 
 # models
 from sklearn.ensemble import RandomForestClassifier
@@ -101,9 +105,10 @@ models = [
 
 # list of changed_models and their names (names only to make prints easier)
 changed_datasets = [
-    {"name": "Minimum", "transformation": minimum, "dataset": {}},
-    {"name": "Geometric", "transformation": geometric, "dataset": {}},
-    {"name": "Vectorial2D", "transformation": vectorial2D, "dataset": {}}
+    {"name": "Minimum 3D", "transformation": minimum, "dataset": {}},
+    {"name": "Geometric 3D", "transformation": geometric, "dataset": {}},
+    {"name": "Minimum 2D", "transformation": minimum2D, "dataset": {}},
+    {"name": "Geometric 2D", "transformation": geometric2D, "dataset": {}}
 ]
 for option in changed_datasets:
     new_features = []
