@@ -38,7 +38,7 @@ python3 datasets/merge_data.py
 Os dados serão salvos no arquivo "datasets/base_dataset.pickle".
 
 ### Separando dados de treino e teste
-Para ser possível treinar o modelo de posteriormente testá-lo, é necessário fazer o split dos dados
+Para ser possível treinar o modelo e posteriormente testá-lo, é necessário fazer o split dos dados
 Execute o código "merge_data.py":
 ```console
 python3 models/create_split.py
