@@ -14,7 +14,7 @@ def path_to(p):
     return os.path.join(WORKING_DIR, p)
 
 # Loads dataset
-data = pickle.load(open(path_to('../datasets/base_dataset.pickle'), 'rb'))
+data = pickle.load(open(path_to(os.path.join(os.pardir, "datasets", "base_dataset.pickle")), 'rb'))
 
 X = data["features"]
 y = data["labels"]
@@ -29,7 +29,7 @@ if not os.path.exists(path_to("TrainTestData")):
 data_train = {"features": X_train, "labels": y_train}
 data_test = {"features": X_test, "labels": y_test}
 
-with open(path_to("TrainTestData/train_data.pickle"), "wb") as dataset:
+with open(path_to(os.path.join("TrainTestData", "train_data.pickle")), "wb") as dataset:
     pickle.dump(data_train, dataset)
-with open(path_to("TrainTestData/test_data.pickle"), "wb") as dataset:
+with open(path_to(os.path.join("TrainTestData", "test_data.pickle")), "wb") as dataset:
     pickle.dump(data_test, dataset)

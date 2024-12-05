@@ -8,7 +8,7 @@ import cv2
 import mediapipe as mp
 import numpy as np
 
-sys.path.insert(1, "./models")
+sys.path.insert(1, "models")
 from transformations import geometric2D
 
 def closeApp(exitCode):
@@ -29,7 +29,7 @@ WINDOW_NAME = "App"
 WORKING_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)))
 
 # Loads model
-model_path = os.path.join(WORKING_DIR, "models/best_model.sav")
+model_path = os.path.join(WORKING_DIR, "models", "best_model.sav")
 model = pickle.load(open(model_path, 'rb'))
 
 # Initi video cpture and verify camera

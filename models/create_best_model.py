@@ -24,7 +24,7 @@ def path_to(p):
     return os.path.join(WORKING_DIR, p)
 
 # get dataset
-data_path = path_to("TrainTestData/train_data.pickle")
+data_path = path_to(os.path.join("TrainTestData", "train_data.pickle"))
 data = pickle.load(open(data_path, "rb"))
 
 # Geometric transformation

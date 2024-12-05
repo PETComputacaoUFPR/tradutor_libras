@@ -9,7 +9,7 @@ data = {"person_id": [], "features": [], "labels": []}
 # directory of this file
 WORKING_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)))
 
-DATA_DIR = os.path.join(WORKING_DIR, "data/")
+DATA_DIR = os.path.join(WORKING_DIR, "data")
 
 # loops through datasets
 for dataset in os.listdir(DATA_DIR):

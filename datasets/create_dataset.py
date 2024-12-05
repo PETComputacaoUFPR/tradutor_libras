@@ -17,7 +17,7 @@ FILE_NAME = input("file name (without .pickle): ")
 FILE_NAME += ".pickle"
 
 # get symbols from "symbols" file
-symbols_path = path_to("../symbols")
+symbols_path = path_to(os.path.join(os.pardir, "symbols"))
 with open(symbols_path, "r") as file:
     lines = file.read().splitlines()
     symbols = lines[0].strip()
@@ -31,7 +31,7 @@ mp_drawing_styles = mp.solutions.drawing_styles
 hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3)
 
 # path of images
-IMAGES_DIR = path_to("../images")
+IMAGES_DIR = path_to(os.path.join(os.pardir, "images"))
 
 # destiny directory
 DATA_DIR = path_to("data")
