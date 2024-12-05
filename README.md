@@ -10,19 +10,7 @@ Esse projeto foi fortemente inspirado nesse repositório: https://github.com/com
 
 ## Instalando bibliotecas necessárias
 ```console
-sudo apt install python3-pip
-```
-
-```console
-pip3 install -U scikit-learn
-```
-
-```console
-sudo apt-get install python3-opencv
-```
-
-```console
-pip install mediapipe
+pip install -r requirements.txt
 ```
 
 ## Como usar
