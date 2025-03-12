@@ -7,8 +7,7 @@
 """
 
 # importing important libraries
-# transformations library
-from transformations import geometric2D
+from LibrasModel import LibrasModel
 # models
 from sklearn.svm import SVC
 # loading data
@@ -27,12 +26,11 @@ def path_to(p):
 data_path = path_to(os.path.join("TrainTestData", "train_data.pickle"))
 data = pickle.load(open(data_path, "rb"))
 
-# Geometric transformation
-geometric2D_X = []
-for observation in data["features"]:
-    geometric2D_X.append(geometric2D(observation))
 
-svm = SVC(kernel="rbf", C=40, gamma=5)
-svm.fit(geometric2D_X, data["labels"])
+X = np.array(data["features"])
+y = np.array(data["labels"])
 
+svm = SVC(C=20, gamma=5, kernel="rbf")
+model = LibrasModel(svm, has_z=False)
+model.fit(X, y)
 pickle.dump(svm, open(path_to("best_model.sav"), "wb"))
