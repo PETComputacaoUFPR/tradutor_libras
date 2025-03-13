@@ -8,13 +8,8 @@ import cv2
 import mediapipe as mp
 import numpy as np
 
-<<<<<<< HEAD
 sys.path.insert(1, "./models")
 from models.LibrasModel import LibrasModel
-=======
-sys.path.insert(1, "models")
-from transformations import geometric2D
->>>>>>> 3a3ef64124ed06f714de4aa213c75393138f1178
 
 def closeApp(exitCode):
     cap.release()
@@ -34,14 +29,9 @@ WINDOW_NAME = "App"
 WORKING_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)))
 
 # Loads model
-<<<<<<< HEAD
 model_path = os.path.join(WORKING_DIR, "models/best_model.sav")
 base_model = pickle.load(open(model_path, 'rb'))
 model = LibrasModel(base_model, has_z=False)
-=======
-model_path = os.path.join(WORKING_DIR, "models", "best_model.sav")
-model = pickle.load(open(model_path, 'rb'))
->>>>>>> 3a3ef64124ed06f714de4aa213c75393138f1178
 
 # Initi video cpture and verify camera
 cap = cv2.VideoCapture(0)
