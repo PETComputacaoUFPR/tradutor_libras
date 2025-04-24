@@ -16,6 +16,10 @@ def closeApp(exitCode):
     cv2.destroyAllWindows()
     exit(exitCode)
 
+
+# how many hands to detect (in max)
+MAX_HANDS = 3
+
 # controls min probability to classify class
 MIN_PROB = 0.0
 
@@ -33,44 +37,10 @@ model_path = os.path.join(WORKING_DIR, "models/best_model.sav")
 base_model = pickle.load(open(model_path, 'rb'))
 model = LibrasModel(base_model, has_z=False)
 
-# Initi video cpture and verify camera
-cap = cv2.VideoCapture(0)
-if not cap.isOpened():
-    print("\033[31mNão foi possível abrir a camera, saindo do programa !!!\033[0m")
-    closeApp(1)
-else:
-    print("Camera inicada")
 
-# Create cv2 window and close callback
-cv2.namedWindow(WINDOW_NAME, cv2.WND_PROP_FULLSCREEN)
-
-# Creates panel and hand application
-mp_hands = mp.solutions.hands
-mp_drawing = mp.solutions.drawing_utils
-mp_drawing_styles = mp.solutions.drawing_styles
-
-# Only one hand will be detected per frame
-hands = mp_hands.Hands(static_image_mode=True, max_num_hands=1, min_detection_confidence=0.3)
-
-while cv2.waitKeyEx(1) != QUIT_KEY:
-    # Creates frame and changed color system to RGB
-    ret, frame = cap.read()
-    H, W, _ = frame.shape
-    frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-
-    # if there's a hand, tries to detect symbol
-    results = hands.process(frame_rgb)
-    if results.multi_hand_landmarks:
-        hand_landmarks = results.multi_hand_landmarks[0]
-
-        # Draws hand's coordinates
-        mp_drawing.draw_landmarks(
-            frame,  # image to draw
-            hand_landmarks,  # model output
-            mp_hands.HAND_CONNECTIONS,  # hand connections
-            mp_drawing_styles.get_default_hand_landmarks_style(),
-            mp_drawing_styles.get_default_hand_connections_style())
-
+# predicts symbol from one hand
+# ialso returns the box limits of hand
+def predict(hand_landmarks):
         # Gets values for prediction and to draw box around hand
         data_aux = []
         x_min, x_max = hand_landmarks.landmark[0].x, hand_landmarks.landmark[0].x
@@ -98,7 +68,61 @@ while cv2.waitKeyEx(1) != QUIT_KEY:
         # prediction
         x = np.array([data_aux])
         predicted_character = model.predict(x)[0]
+        return predicted_character, (x1, y1), (x2, y2) 
 
+
+# Initi video cpture and verify camera
+cap = cv2.VideoCapture(0)
+if not cap.isOpened():
+    print("\033[31mNão foi possível abrir a camera, saindo do programa !!!\033[0m")
+    closeApp(1)
+else:
+    print("Camera inicada")
+
+# Create cv2 window and close callback
+cv2.namedWindow(WINDOW_NAME, cv2.WND_PROP_FULLSCREEN)
+
+# Creates panel and hand application
+mp_hands = mp.solutions.hands
+mp_drawing = mp.solutions.drawing_utils
+mp_drawing_styles = mp.solutions.drawing_styles
+
+# Only one hand will be detected per frame
+hands = mp_hands.Hands(static_image_mode=True, max_num_hands=MAX_HANDS, min_detection_confidence=0.3)
+
+while cv2.waitKeyEx(1) != QUIT_KEY:
+    # Creates frame and changed color system to RGB
+    ret, frame = cap.read()
+    H, W, _ = frame.shape
+    frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
+    # if there's a hand, tries to detect symbol
+    results = hands.process(frame_rgb)
+    if results.multi_hand_landmarks:
+        best_char = None
+        best_area = -float("inf")
+        best_points = None      
+        for hand_landmarks in results.multi_hand_landmarks:
+            # Draws hand's coordinates
+            #mp_drawing.draw_landmarks(
+            #    frame,  # image to draw
+            #    hand_landmarks,  # model output
+            #    mp_hands.HAND_CONNECTIONS,  # hand connections
+            #    mp_drawing_styles.get_default_hand_landmarks_style(),
+            #    mp_drawing_styles.get_default_hand_connections_style())
+
+            predicted_character, p1, p2 = predict(hand_landmarks)
+            x1, y1 = p1
+            x2, y2 = p2
+
+            if ((y2 - y1) * (x2 - x1) > best_area):
+                best_area =(y2 - y1) * (x2 - x1)
+                best_char = predicted_character
+                best_points = ((x1, y1), (x2, y2))
+
+        x1, y1 = best_points[0]
+        x2, y2 = best_points[1]
+        predicted_character = best_char
         cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 0), 4)
         cv2.putText(frame, predicted_character, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 0, 0), 3,
                     cv2.LINE_AA)
