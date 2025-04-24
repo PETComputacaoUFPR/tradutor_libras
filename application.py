@@ -42,7 +42,7 @@ else:
     print("Camera inicada")
 
 # Create cv2 window and close callback
-cv2.namedWindow(WINDOW_NAME)
+cv2.namedWindow(WINDOW_NAME, cv2.WND_PROP_FULLSCREEN)
 
 # Creates panel and hand application
 mp_hands = mp.solutions.hands
