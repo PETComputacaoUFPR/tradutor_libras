@@ -101,12 +101,12 @@ while cv2.waitKeyEx(1) != QUIT_KEY:
               
         for hand_landmarks in results.multi_hand_landmarks:
             # Draws hand's coordinates
-            mp_drawing.draw_landmarks(
-                frame,  # image to draw
-                hand_landmarks,  # model output
-                mp_hands.HAND_CONNECTIONS,  # hand connections
-                mp_drawing_styles.get_default_hand_landmarks_style(),
-                mp_drawing_styles.get_default_hand_connections_style())
+            #mp_drawing.draw_landmarks(
+            #    frame,  # image to draw
+            #    hand_landmarks,  # model output
+            #    mp_hands.HAND_CONNECTIONS,  # hand connections
+            #    mp_drawing_styles.get_default_hand_landmarks_style(),
+            #    mp_drawing_styles.get_default_hand_connections_style())
 
             predicted_character, p1, p2 = predict(hand_landmarks)
             x1, y1 = p1
