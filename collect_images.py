@@ -3,6 +3,7 @@ import os
 import cv2
 
 DATASET_SIZE = 20  # how many images will be collected
+ENTER_KEY = 13
 
 # directory of this file
 WORKING_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)))
@@ -27,14 +28,17 @@ cv2.imshow('frame', frame)
 # 0 -> symbol; 1 -> counter
 image_info = ["", 0] 
 
-# allows for saving images via mouse
-def save_image(event, x, y, flags, params):
-    if event != cv2.EVENT_LBUTTONDOWN:
-        return
+# allows for saving images via mouse and enter
+def save_image(params):
     print(f"image {params[1]}/{DATASET_SIZE} collected")
     cv2.imwrite(os.path.join(DATA_DIR, params[0], '_{}.jpg'.format(params[1])), frame)
     params[1] += 1
-cv2.setMouseCallback("frame", save_image, image_info)
+
+def mouse_callback(event, x, y, flags, params):
+    if event == cv2.EVENT_LBUTTONDOWN:
+        save_image(image_info)
+
+cv2.setMouseCallback("frame", mouse_callback)
 
 # loops through symbols
 for symbol in symbols:
@@ -54,11 +58,10 @@ for symbol in symbols:
     image_info[1] = len(os.listdir(symbol_path)) + 1
     while image_info[1] <= DATASET_SIZE:
         ret, frame = cap.read()
-        # the output for pressing ENTER is 13
-        if cv2.waitKey(1) == 13:
-            print(f"image {image_info[1]}/{DATASET_SIZE} collected")
-            cv2.imwrite(os.path.join(DATA_DIR, image_info[0], '_{}.jpg'.format(image_info[1])), frame)
-            image_info[1] += 1
+
+        if cv2.waitKey(1) == ENTER_KEY:
+            save_image(image_info)
+
         cv2.imshow('frame', frame)
 
 # ends application after capturing all images
