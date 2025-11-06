@@ -15,6 +15,9 @@ with open(symbols_path, "r") as file:
     lines = file.read().splitlines()
     symbols = lines[0].strip()
 
+# symbols images path
+symbols_imgs = os.path.join(WORKING_DIR, "assets")
+
 # creates images path
 DATA_DIR = os.path.join(WORKING_DIR, "images")
 if not os.path.exists(DATA_DIR):
@@ -60,9 +63,20 @@ for symbol in symbols:
     # collects remaining images
     print('Collecting data for class {}'.format(symbol))
     image_info[1] = len(os.listdir(symbol_path)) + 1
+
+    # symbols images config
+    symbol_img = cv2.imread(f'{symbols_imgs}/{symbol}.png')
+    symbol_h = 125
+    symbol_w = 125
+    im = cv2.resize(symbol_img, (symbol_h, symbol_w))
+
     while image_info[1] <= DATASET_SIZE:
         ret, frame = cap.read()
 
+        # draw symbol in the window
+        frame[0:symbol_h, 0:symbol_w] = im
+        cv2.rectangle(frame, (0, 0), (symbol_w, symbol_h), (0, 0, 0), 2)
+        
         frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         
         # if there's a hand, tries to detect symbol
